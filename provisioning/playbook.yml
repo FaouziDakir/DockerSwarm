@@ -1,0 +1,27 @@
+- name: install docker & docker-compose
+  hosts: all
+  become: true
+  strategy: free
+  roles:
+    - base
+
+- name: initialise swarm
+  hosts: master1
+  become: true
+  roles:
+    - swarm-init
+
+- name: join swarm
+  hosts: slave1
+  become: true
+  roles:
+    - worker-join
+
+- name: join swarm 2
+  hosts: slave2
+  become: true
+  roles:
+    - worker-join
+
+
+
