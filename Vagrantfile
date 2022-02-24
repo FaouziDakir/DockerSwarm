@@ -1,17 +1,7 @@
-# Vagrant.configure("2") do |config|
-#   config.vm.box = "hashicorp/bionic64"
-#   config.vm.define "Worker2"
-#   config.vm.network "private_network", ip: "192.168.33.51"
-#   config.vm.synced_folder '.', '/vagrant', disabled: true
-#   config.vm.provision "ansible" do |ansible|
-#     ansible.playbook = "provisioning/playbook.yml"
-#   end
-# end
-
 nodes = [
   { :hostname => "master1", :ip => "10.0.0.10"},
-  { :hostname => "slave1", :ip => "10.0.0.12"},
-  { :hostname => "slave2", :ip => "10.0.0.13"},
+  { :hostname => "worker1", :ip => "10.0.0.12"},
+  { :hostname => "worker2", :ip => "10.0.0.13"},
 ]
 
 Vagrant.configure("2") do |config|
@@ -19,14 +9,13 @@ Vagrant.configure("2") do |config|
   nodes.each do |node|
     config.vm.define node[:hostname] do |conf|
       conf.vm.box = "hashicorp/bionic64"
-      conf.vm.synced_folder '.', '/vagrant', disabled: true
+      #Uncomment this line to disable the vagrant shared folder
+      #conf.vm.synced_folder '.', '/vagrant', disabled: true
       conf.vm.hostname = node[:hostname]
       conf.vm.network :private_network, ip: node[:ip]
     end
   end
 
-  #config.ssh.insert_key = false
-  #config.ssh.forward_agent = true
   config.vm.provision "ansible" do |ansible|
     ansible.verbose = false
     ansible.limit = "all"

@@ -12,16 +12,16 @@
     - swarm-init
 
 - name: join swarm
-  hosts: slave1
+  hosts: worker1, worker2
   become: true
   roles:
-    - worker-join
+    - node-join
 
-- name: join swarm 2
-  hosts: slave2
-  become: true
-  roles:
-    - worker-join
+#- name: join swarm 2
+#  hosts: node2
+#  become: true
+#  roles:
+#    - worker-join
 
 
 
